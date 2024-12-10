@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Care Manager - Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen py-8 px-4">
+        <div class="max-w-2xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Pet Care Manager</h1>
+                <p class="mt-2 text-gray-600">Register a New Pet</p>
+            </div>
+
+            <!-- Registration Form -->
+            <div class="bg-white p-8 rounded-lg shadow">
+                <form id="petRegistrationForm" class="space-y-6">
+                    <!-- Basic Information Section -->
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-semibold text-gray-900">Basic Information</h2>
+                        
+                        <div>
+                            <label for="petName" class="block text-sm font-medium text-gray-700">Pet Name*</label>
+                            <input type="text" id="petName" name="petName" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="species" class="block text-sm font-medium text-gray-700">Species*</label>
+                                <select id="species" name="species" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">Select Species</option>
+                                    <option value="dog">Dog</option>
+                                    <option value="cat">Cat</option>
+                                    <option value="bird">Bird</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="breed" class="block text-sm font-medium text-gray-700">Breed</label>
+                                <input type="text" id="breed" name="breed"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="dateOfBirth" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+                                <input type="date" id="dateOfBirth" name="dateOfBirth"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+
+                            <div>
+                                <label for="weight" class="block text-sm font-medium text-gray-700">Weight (kg)</label>
+                                <input type="number" id="weight" name="weight" step="0.1"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medical Information Section -->
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-semibold text-gray-900">Medical Information</h2>
+                        
+                        <div>
+                            <label for="medicalConditions" class="block text-sm font-medium text-gray-700">Existing Medical Conditions</label>
+                            <textarea id="medicalConditions" name="medicalConditions" rows="3"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact Section -->
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-semibold text-gray-900">Emergency Contact</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="contactName" class="block text-sm font-medium text-gray-700">Contact Name*</label>
+                                <input type="text" id="contactName" name="contactName" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+
+                            <div>
+                                <label for="contactPhone" class="block text-sm font-medium text-gray-700">Contact Phone*</label>
+                                <input type="tel" id="contactPhone" name="contactPhone" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end space-x-4">
+                        <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Clear Form
+                        </button>
+                        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Register Pet
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script src="script.js"></script>
+</body>
+</html>

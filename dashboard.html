@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Care Manager - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .modal-overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Main Dashboard Content -->
+    <div class="min-h-screen p-4">
+        <!-- Navigation -->
+        <nav class="bg-white shadow-sm mb-6 p-4">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-900">Pet Care Dashboard</h1>
+                <a href="index.html" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                    Register New Pet
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto">
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-medium text-gray-900">Total Pets</h3>
+                    <p id="totalPets" class="text-3xl font-bold text-blue-600">0</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-medium text-gray-900">Recent Updates</h3>
+                    <p id="recentUpdates" class="text-3xl font-bold text-green-600">0</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-medium text-gray-900">Pending Actions</h3>
+                    <p id="pendingActions" class="text-3xl font-bold text-orange-600">0</p>
+                </div>
+            </div>
+
+            <!-- Pet List -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-900">Registered Pets</h2>
+                        <input type="text" id="searchPets" placeholder="Search pets..." 
+                            class="px-4 py-2 border rounded-md">
+                    </div>
+                    <div id="petsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Pet cards will be inserted here -->
+                    </div>
+                    <div id="noPets" class="hidden text-center py-8 text-gray-500">
+                        No pets registered yet.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pet Details Modal -->
+    <div id="petDetailsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-3xl shadow-lg rounded-lg bg-white">
+            <div class="flex justify-between items-start">
+                <h2 class="text-2xl font-bold text-gray-900" id="modalPetName"></h2>
+                <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="mt-6 space-y-6">
+                <!-- Basic Information -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600">Species</p>
+                            <p class="text-base font-medium" id="modalSpecies"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Breed</p>
+                            <p class="text-base font-medium" id="modalBreed"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Date of Birth</p>
+                            <p class="text-base font-medium" id="modalDob"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Weight</p>
+                            <p class="text-base font-medium" id="modalWeight"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Information -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Medical Information</h3>
+                    <p class="text-sm text-gray-600">Conditions</p>
+                    <p class="text-base font-medium" id="modalMedicalConditions"></p>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Emergency Contact</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600">Name</p>
+                            <p class="text-base font-medium" id="modalContactName"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Phone</p>
+                            <p class="text-base font-medium" id="modalContactPhone"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration Info -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Registration Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600">Registration Date</p>
+                            <p class="text-base font-medium" id="modalRegistrationDate"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Last Updated</p>
+                            <p class="text-base font-medium" id="modalLastUpdated"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 flex justify-end space-x-4">
+                <button id="editPet" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Edit Details
+                </button>
+                <button id="deletePet" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                    Delete Pet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pet Edit Modal -->
+    <div id="editPetModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-3xl shadow-lg rounded-lg bg-white">
+            <div class="flex justify-between items-start mb-4">
+                <h2 class="text-2xl font-bold text-gray-900">Edit Pet Details</h2>
+                <button id="closeEditModal" class="text-gray-500 hover:text-gray-700">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <form id="editPetForm" class="space-y-6">
+                <input type="hidden" id="editPetId">
+                
+                <!-- Basic Information -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Basic Information</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="editPetName" class="block text-sm font-medium text-gray-700">Pet Name*</label>
+                            <input type="text" id="editPetName" name="petName" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="editSpecies" class="block text-sm font-medium text-gray-700">Species*</label>
+                            <select id="editSpecies" name="species" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="dog">Dog</option>
+                                <option value="cat">Cat</option>
+                                <option value="bird">Bird</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="editBreed" class="block text-sm font-medium text-gray-700">Breed</label>
+                            <input type="text" id="editBreed" name="breed"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="editWeight" class="block text-sm font-medium text-gray-700">Weight (kg)</label>
+                            <input type="number" id="editWeight" name="weight" step="0.1"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="editDateOfBirth" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+                            <input type="date" id="editDateOfBirth" name="dateOfBirth"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Information -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Medical Information</h3>
+                    <div>
+                        <label for="editMedicalConditions" class="block text-sm font-medium text-gray-700">Medical Conditions</label>
+                        <textarea id="editMedicalConditions" name="medicalConditions" rows="3"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Emergency Contact</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="editContactName" class="block text-sm font-medium text-gray-700">Contact Name*</label>
+                            <input type="text" id="editContactName" name="contactName" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="editContactPhone" class="block text-sm font-medium text-gray-700">Contact Phone*</label>
+                            <input type="tel" id="editContactPhone" name="contactPhone" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="flex justify-end space-x-4">
+                    <button type="button" id="cancelEdit" 
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" 
+                        class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="pet-edit.js"></script>
+</body>
+</html>
